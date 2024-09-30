@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Challenge - Hada Labo MY</title>
+
+    <script src="jquery-3.7.0.min.js"></script>
+
+    <style>
+      /*@font-face {font-family: Nars; src: url("HelveticaNeue-UltraLight.otf") format("opentype");}*/
+
+      body {
+        cursor: pointer;
+        padding: 0px;
+        margin: 0px;
+        overflow: hidden;
+        background-color: white;
+      }
+      .noselect {
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      #scene0 {
+        position: absolute;
+        width: 1080px;
+        height: 1920px;
+        left: 0px;
+        top: 0px;
+        border: 1px solid black;
+        display: none;
+        background-image: url("P1.png");
+        background-size: cover; /* Ensures the background image covers the entire area */
+        background-position: center; /* Centers the background image */
+      }
+      #scene1 {
+        position: absolute;
+        width: 1080px;
+        height: 1920px;
+        left: 0px;
+        top: 0px;
+        border: 1px solid black;
+        display: none;
+        background-image: url("hl-bg3.png");
+        background-size: cover; /* Ensures the background image covers the entire area */
+        background-position: center; /* Centers the background image */
+      }
+
+      #scene2 {
+        position: absolute;
+        width: 1080px;
+        height: 1920px;
+        left: 0px;
+        top: 0px;
+        border: 1px solid black;
+        display: none;
+        background-image: url("hl-bg4.png");
+        background-size: cover; /* Ensures the background image covers the entire area */
+        background-position: center; /* Centers the background image */
+      }
+      #scene3 {
+        position: absolute;
+        width: 1080px;
+        height: 1920px;
+        left: 0px;
+        top: 0px;
+        border: 1px solid black;
+        display: none;
+        background-image: url("win.png");
+        background-size: cover; /* Ensures the background image covers the entire area */
+        background-position: center; /* Centers the background image */
+      }
+      #scene4 {
+        position: absolute;
+        width: 1080px;
+        height: 1920px;
+        left: 0px;
+        top: 0px;
+        border: 1px solid black;
+        display: none;
+        background-image: url("P5.png");
+        background-size: cover; /* Ensures the background image covers the entire area */
+        background-position: center; /* Centers the background image */
+      }
+      #scene5 {
+        position: absolute;
+        width: 1080px;
+        height: 1920px;
+        left: 0px;
+        top: 0px;
+        border: 1px solid black;
+        display: none;
+        background-image: url("P6.png");
+        background-size: cover; /* Ensures the background image covers the entire area */
+        background-position: center; /* Centers the background image */
+      }
+      .slice {
+        position: absolute;
+        width: 255px;
+        height: 325px;
+      }
+
+      #divtimer {
+        position: relative;
+        left: 414px;
+        top: 135px;
+        width: 220px;
+        text-align: center;
+        border: 0px solid red;
+      }
+      #txttimer1 {
+        font-family: Arial;
+        font-size: 70px;
+        color: white;
+      }
+      #txttimer2 {
+        font-family: Arial;
+        font-size: 140px;
+        font-weight: bold;
+        color: white;
+      }
+
+      #divscore {
+        position: relative;
+        left: 0px;
+        top: 250px;
+        width: 1080px;
+        text-align: center;
+        border: 0px solid red;
+      }
+      #txtscore1 {
+        font-family: Arial;
+        font-size: 100px;
+        font-weight: bold;
+        margin-top: 50px;
+        color: white;
+      }
+      #txtscore2 {
+        font-family: Arial;
+        font-size: 80px;
+        color: white;
+      }
+      #txtscore3 {
+        font-family: Arial;
+        font-size: 120px;
+        font-weight: bold;
+        color: white;
+      }
+
+      .holder {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 1px;
+        height: 1px;
+      }
+      /*#divmatch {position:absolute; left:0px; top:0px; width:1080px; height:1920px; border:0px solid red;}*/
+      #confetti {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 1080px;
+        height: 1920px;
+        border: 0px solid red;
+        background-image: url("confetti.gif");
+      }
+      .btn {
+        position: absolute;
+        left: 184px;
+        bottom: 94px;
+        width: 700px;
+        border-radius: 21px;
+        height: 114px;
+        font-size: 30px;
+      }
+
+      #divtxtmatch {
+        position: absolute;
+        left: 0px;
+        top: 235px;
+        width: 1080px;
+        text-align: center;
+      }
+      #txtmatch1 {
+        font-family: Arial;
+        font-size: 90px;
+        font-weight: bold;
+        margin-top: 10px;
+        z-index: 99;
+        color: white;
+      }
+      #txtmatch2 {
+        font-family: Arial;
+        font-size: 70px;
+        margin-top: 40px;
+        z-index: 99;
+        color: white;
+      }
+      #overlay {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 1080px;
+        height: 1920px;
+        background-color: black;
+        opacity: 0.85;
+        border: 0px solid red;
+      }
+      #imgwinbg {
+        position: absolute;
+        left: 80px;
+        top: 535px;
+        width: 930px;
+        text-align: center;
+        border: 0px solid red;
+      }
+      #divwinobj {
+        position: absolute;
+        left: 350px;
+        top: 670px;
+        width: 255px;
+        text-align: center;
+        border: 0px solid red;
+      }
+
+      /*--flip--*/
+      .flip-card {
+        width: 255px;
+        height: 325px;
+        perspective: 1000px;
+      }
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+      /*.flip-card:hover .flip-card-inner {transform: rotateY(180deg);}*/
+      .flip {
+        transform: rotateY(180deg);
+      }
+      .flip-card-front,
+      .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+      .flip-card-back {
+        transform: rotateY(180deg);
+      }
+      /*--------*/
+    </style>
+  </head>
+  <body class="noselect" ondragstart="return false;" ondrop="return false;">
+    <div id="scene0" onclick="preparegame();">
+      <!-- <button class="btn" onclick="preparegame();">Click To Start</button> -->
+    </div>
+    <div id="scene1" onclick="readygame();"></div>
+    <div id="scene2">
+      <div id="divtimer">
+        <div id="txttimer1">TIME</div>
+        <div id="txttimer2">0</div>
+      </div>
+      <div id="slice0" class="slice" style="left: 120px; top: 420px">
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard0">
+            <div class="flip-card-front">
+              <img
+                id="tile0"
+                onmousedown="tap(0)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex0"
+                onmousedown="tap(0)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice1"
+        class="slice"
+        style="left: calc(140px + 275px); top: 420px"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard1">
+            <div class="flip-card-front">
+              <img
+                id="tile1"
+                onmousedown="tap(1)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex1"
+                onmousedown="tap(1)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice2"
+        class="slice"
+        style="left: calc(160px + 550px); top: 420px"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard2">
+            <div class="flip-card-front">
+              <img
+                id="tile2"
+                onmousedown="tap(2)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex2"
+                onmousedown="tap(2)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice3"
+        class="slice"
+        style="left: 120px; top: calc(420px + 300px)"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard3">
+            <div class="flip-card-front">
+              <img
+                id="tile3"
+                onmousedown="tap(3)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex3"
+                onmousedown="tap(3)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice4"
+        class="slice"
+        style="left: calc(140px + 275px); top: calc(420px + 300px)"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard4">
+            <div class="flip-card-front">
+              <img
+                id="tile4"
+                onmousedown="tap(4)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex4"
+                onmousedown="tap(4)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice5"
+        class="slice"
+        style="left: calc(160px + 550px); top: calc(420px + 300px)"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard5">
+            <div class="flip-card-front">
+              <img
+                id="tile5"
+                onmousedown="tap(5)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex5"
+                onmousedown="tap(5)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice6"
+        class="slice"
+        style="left: 120px; top: calc(720px + 300px)"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard6">
+            <div class="flip-card-front">
+              <img
+                id="tile6"
+                onmousedown="tap(6)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex6"
+                onmousedown="tap(6)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice7"
+        class="slice"
+        style="left: calc(140px + 275px); top: calc(720px + 300px)"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard7">
+            <div class="flip-card-front">
+              <img
+                id="tile7"
+                onmousedown="tap(7)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex7"
+                onmousedown="tap(7)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice8"
+        class="slice"
+        style="left: calc(160px + 550px); top: calc(720px + 300px)"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard8">
+            <div class="flip-card-front">
+              <img
+                id="tile8"
+                onmousedown="tap(8)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex8"
+                onmousedown="tap(8)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice9"
+        class="slice"
+        style="left: 120px; top: calc(1020px + 300px)"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard9">
+            <div class="flip-card-front">
+              <img
+                id="tile9"
+                onmousedown="tap(9)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex9"
+                onmousedown="tap(9)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice10"
+        class="slice"
+        style="left: calc(140px + 275px); top: calc(1020px + 300px)"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard10">
+            <div class="flip-card-front">
+              <img
+                id="tile10"
+                onmousedown="tap(10)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex10"
+                onmousedown="tap(10)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="slice11"
+        class="slice"
+        style="left: calc(160px + 550px); top: calc(1020px + 300px)"
+      >
+        <div class="flip-card">
+          <div class="flip-card-inner" id="fcard11">
+            <div class="flip-card-front">
+              <img
+                id="tile11"
+                onmousedown="tap(11)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+            <div class="flip-card-back">
+              <img
+                id="tilex11"
+                onmousedown="tap(11)"
+                onmouseup=""
+                src=""
+                style="cursor: pointer"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <img class="holder" id="hold0" src="card0.png" />
+      <img class="holder" id="hold1" src="card1.png" />
+      <img class="holder" id="hold2" src="card2.png" />
+      <img class="holder" id="hold3" src="card3.png" />
+      <img class="holder" id="hold4" src="card4.png" />
+      <img class="holder" id="hold5" src="card5.png" />
+      <img class="holder" id="hold6" src="card6.png" />
+
+      <div id="divmatch">
+        <img id="overlay" />
+        <div id="divtxtmatch">
+          <div id="txtmatch1">xxx</div>
+          <div id="txtmatch2">yyy</div>
+        </div>
+        <img id="imgwinbg" src="winbg.png" />
+        <div id="divwinobj"><img id="imgobj" src="obj1.png" /></div>
+      </div>
+    </div>
+    <div id="scene3" onclick="resetgame();">
+      <div id="confetti"></div>
+      <div id="divscore">
+        <div id="txtscore1">Congratulations</div>
+        <div id="txtscore2"><br />You have score</div>
+        <div id="txtscore3">0</div>
+      </div>
+    </div>
+    <div id="scene4" onclick="aftergame();"></div>
+    <div id="scene5" onclick="endgame();"></div>
+  </body>
+  <script>
+    function gebi(s) {
+      return document.getElementById(s);
+    }
+
+    var sflip = new Audio("flip.mp3");
+    var smatch = new Audio("match.mp3");
+    var slose = new Audio("lose.mp3");
+    var swin = new Audio("win.mp3");
+
+    function shuffle(array) {
+      let currentIndex = array.length,
+        randomIndex;
+      while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [
+          array[randomIndex],
+          array[currentIndex],
+        ];
+      }
+      return array;
+    }
+
+    var curscene = 0;
+    var maxscene = 2;
+    var playtime = 30;
+    var gtime = playtime;
+    var ttime = 0;
+    var arrp = new Array();
+    var arro = new Array();
+    var gamelock = 0;
+    var hold = -1;
+
+    var arrt1 = new Array();
+    var arrt2 = new Array();
+    arrt1[1] = "";
+    arrt1[2] = "";
+    arrt1[3] = "";
+    arrt1[4] = "";
+    arrt1[5] = "";
+    arrt1[6] = "";
+    arrt2[1] = "";
+    arrt2[2] = "";
+    arrt2[3] = "";
+    arrt2[4] = "";
+    arrt2[5] = "";
+    arrt2[6] = "";
+
+    function goscene(n) {
+      $("#scene" + curscene).fadeOut(500);
+      $("#scene" + n).fadeIn(500);
+      curscene = n;
+      //for (var i=1;i<=maxscene;i++){gebi('scene'+i).style.display='none';}
+    }
+
+    function resetgame() {
+      gtime = playtime;
+      ttime = 0;
+      gamelock = 0;
+
+      gebi("txttimer2").innerHTML = gtime;
+
+      for (var i = 0; i < 6; i++) {
+        arrp[i] = i + 1;
+        arrp[i + 6] = i + 1;
+      }
+      shuffle(arrp);
+      //console.log(arrp);
+      for (var i = 0; i < 12; i++) {
+        arro[i] = 0;
+      }
+      for (var i = 0; i < 12; i++) {
+        gebi("tilex" + i).src = gebi("hold" + arrp[i]).src;
+      }
+      for (var i = 0; i < 12; i++) {
+        gebi("tile" + i).src = gebi("hold0").src;
+      }
+      for (var i = 0; i < 12; i++) {
+        gebi("fcard" + i).classList.remove("flip");
+      }
+      $("#overlay").fadeOut(100);
+      $("#divmatch").fadeOut(100);
+
+      setTimeout("goscene(0)", 400);
+    }
+    function preparegame() {
+      goscene(1);
+    }
+    function aftergame() {
+      goscene(5);
+    }
+    function endgame() {
+      resetgame();
+    }
+    function readygame() {
+      ttime = 0;
+      gamelock = 1;
+      goscene(2);
+      setTimeout("previewcards()", 1200);
+      setTimeout("startgame()", 3200);
+    }
+    function previewcards() {
+      for (var i = 0; i < 12; i++) {
+        gebi("fcard" + i).classList.add("flip");
+      }
+    }
+    function startgame() {
+      ttime = 0;
+      for (var i = 0; i < 12; i++) {
+        gebi("fcard" + i).classList.remove("flip");
+      }
+      gamelock = 0;
+    }
+
+    function do1sec() {
+      ttime++;
+      if (ttime >= 15) {
+        resetgame();
+      }
+      if (curscene == 2) {
+        if (gamelock == 0) {
+          gtime--;
+          if (gtime < 0) {
+            gtime = 0;
+          }
+          gebi("txttimer2").innerHTML = gtime;
+          if (gtime == 0) {
+            gamelock = 1;
+            slose.play();
+            gebi("confetti").style.display = "none";
+            gebi("txtscore1").innerHTML = "TIMES UP";
+            gebi("txtscore3").innerHTML = 0;
+            goscene(3);
+          }
+        }
+      }
+      setTimeout("do1sec()", 1000);
+    }
+    setTimeout("do1sec()", 100);
+
+    function tap(n) {
+      ttime = 0;
+      if (gamelock == 1) {
+        return;
+      }
+      if (arro[n] == 1) {
+        return;
+      }
+      if (hold == -1) {
+        sflip.play();
+        gebi("fcard" + n).classList.toggle("flip");
+        hold = n;
+      } else {
+        if (hold == n) {
+          sflip.play();
+          gebi("fcard" + n).classList.toggle("flip");
+          hold = -1;
+        } else {
+          gamelock = 1;
+          sflip.play();
+          gebi("fcard" + n).classList.toggle("flip");
+          setTimeout("checkwin(" + hold + "," + n + ")", 1000);
+        }
+      }
+    }
+
+    function checkwin(n, m) {
+      var havematch = 0;
+      if (arrp[n] == arrp[m]) {
+        arro[n] = 1;
+        arro[m] = 1;
+        havematch = 1;
+        smatch.play();
+        showmatch(n);
+      } else {
+        gebi("fcard" + m).classList.remove("flip");
+        gebi("fcard" + n).classList.remove("flip");
+      }
+
+      var win = 1;
+      for (var i = 0; i < 12; i++) {
+        if (arro[i] == 0) {
+          win = 0;
+          break;
+        }
+      }
+
+      if (win == 1) {
+        goscene(4);
+      } else {
+        if (havematch == 0) {
+          gamelock = 0;
+        }
+        hold = -1;
+      }
+    }
+    function showmatch(n) {
+      //gebi('txtmatch1').innerHTML=arrt1[arrp[n]];
+      //gebi('txtmatch2').innerHTML=arrt2[arrp[n]];
+      //gebi('imgobj').src=gebi('obj'+arrp[n]).src;
+      //$("#overlay").fadeIn(50);
+      //$("#divmatch").fadeIn(500);
+      setTimeout("hidematch()", 1000);
+      gamelock = 0;
+    }
+    function hidematch() {
+      $("#divmatch").fadeOut(500);
+      $("#overlay").fadeOut(700);
+      gamelock = 0;
+    }
+    resetgame();
+  </script>
+</html>
